@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\wikisuplementos
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/wikisuplementos/Views/Home/CadastroSuplmentos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWRhc3Ryb1N1cGxtZW50b3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/wikisuplementos/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

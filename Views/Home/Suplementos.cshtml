@@ -55,14 +55,14 @@
             margin-bottom: 1em;
         }
 
-        .actions button, .actions select {
+        .actions a, .actions select {
             padding: 0.5em 1em;
             border-radius: 5px;
             border: none;
             cursor: pointer;
         }
 
-        .actions button {
+        .actions a {
             background-color: #28a745;
             color: white;
             font-size: 1em;
@@ -130,8 +130,8 @@
         <div class="container">
             <h2>Informações sobre Suplementos</h2>
             <div class="actions">
-                <button>Adicionar Informação</button>
-                <select>
+                <a asp-area="" asp-controller="Home" asp-action="CadastroSuplmentos">Adicionar Informação</a>
+                <select id="categoryFilter">
                     <option value="">Filtrar por Categoria</option>
                     <option value="proteinas">Proteínas</option>
                     <option value="aminoacidos">Aminoácidos</option>
@@ -140,7 +140,7 @@
                 </select>
             </div>
             <div class="supplements">
-                <div class="supplement-card">
+                <div class="supplement-card proteinas">
                     <img src="https://images.tcdn.com.br/img/img_prod/767774/hyper_whey_900g_creatine_power_300g_767_1_60fd5a41bc1ce6b2ea366f799e7d8d39.png" alt="Suplemento 1">
                     <div class="card-content">
                         <h3>Whey Protein</h3>
@@ -148,35 +148,35 @@
                         <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-check"></i></a>
                     </div>
                 </div>
-                <div class="supplement-card">
+                <div class="supplement-card proteinas">
                     <img src="https://via.placeholder.com/300x200" alt="Suplemento 2">
                     <div class="card-content">
                         <h3>Creatina</h3>
                         <p>A Creatina é um suplemento que ajuda a melhorar o desempenho atlético e a aumentar a força muscular.</p>
                     </div>
                 </div>
-                <div class="supplement-card">
+                <div class="supplement-card aminoacidos">
                     <img src="https://via.placeholder.com/300x200" alt="Suplemento 3">
                     <div class="card-content">
                         <h3>BCAA</h3>
                         <p>Os BCAAs são aminoácidos essenciais que ajudam na recuperação muscular e na redução da fadiga durante os treinos.</p>
                     </div>
                 </div>
-                <div class="supplement-card">
+                <div class="supplement-card aminoacidos">
                     <img src="https://via.placeholder.com/300x200" alt="Suplemento 4">
                     <div class="card-content">
                         <h3>Glutamina</h3>
                         <p>A Glutamina é um aminoácido que auxilia na recuperação muscular e no fortalecimento do sistema imunológico.</p>
                     </div>
                 </div>
-                <div class="supplement-card">
+                <div class="supplement-card termogenicos">
                     <img src="https://via.placeholder.com/300x200" alt="Suplemento 5">
                     <div class="card-content">
                         <h3>Termogênicos</h3>
                         <p>Os termogênicos ajudam a acelerar o metabolismo, aumentando a queima de gordura e melhorando a performance.</p>
                     </div>
                 </div>
-                <div class="supplement-card">
+                <div class="supplement-card vitaminas">
                     <img src="https://via.placeholder.com/300x200" alt="Suplemento 6">
                     <div class="card-content">
                         <h3>Ômega 3</h3>
@@ -191,15 +191,27 @@
             <p>&copy; 2024 WikiSuplementos. Todos os direitos reservados.</p>
         </div>
     </footer>
+    <script>
+        function goSaiba(){
+            Swal.fire({
+                title: "Marcas Que Fabrica o produto",
+                text: "Growth, DarkLab, Probiotica, MaxSuplementos",
+                icon: "info"
+            });
+        }
+
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            var selectedCategory = this.value;
+            var cards = document.querySelectorAll('.supplement-card');
+
+            cards.forEach(function(card) {
+                if (selectedCategory === "" || card.classList.contains(selectedCategory)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
-<script>
-    function goSaiba(){
-    Swal.fire({
-    title: "Marcas Que Fabrica o produto",
-    text: "Growth, DarkLab, Probiotica, MaxSuplementos",
-    icon: "info"
-    });
-    }
-</script>
