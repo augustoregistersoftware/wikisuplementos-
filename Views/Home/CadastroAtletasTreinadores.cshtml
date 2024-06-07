@@ -78,10 +78,19 @@
             <input type="text" id="name" name="name" required>
 
             <label for="description">Descrição</label>
-            <textarea id="description" name="description" required></textarea>
+            <input type="text" id="description" name="description" required>
 
             <label for="photo">Link da Foto</label>
             <input type="text" id="photo" name="photo" required>
+
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" name="cep" required onblur="fetchAddress()">
+
+            <label for="cidade">Cidade</label>
+            <input type="text" id="cidade" name="cidade" required>
+
+            <label for="uf">UF</label>
+            <input type="text" id="uf" name="uf" required>
 
             <label for="brand">Grupo</label>
             <input type="text" id="brand" name="brand" required>
@@ -89,5 +98,26 @@
             <button type="submit">Cadastrar</button>
         </form>
     </div>
+
+    <script>
+        function fetchAddress() {
+            var cep = document.getElementById('cep').value;
+            if (cep.length === 8) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('cidade').value = data.localidade;
+                            document.getElementById('uf').value = data.uf;
+                        } else {
+                            alert("CEP não encontrado.");
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar o CEP:', error));
+            } else {
+                alert("CEP inválido.");
+            }
+        }
+    </script>
 </body>
 </html>

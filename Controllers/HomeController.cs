@@ -23,7 +23,17 @@ public class HomeController : Controller
         return View();
     }
 
+      public IActionResult AtletasTreinadores()
+    {
+        return View();
+    }
+
         public IActionResult CadastroSuplmentos()
+    {
+        return View();
+    }
+
+        public IActionResult CadastroAtletasTreinadores()
     {
         return View();
     }
