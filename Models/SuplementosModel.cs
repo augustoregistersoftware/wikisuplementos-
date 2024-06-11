@@ -1,8 +1,17 @@
-namespace wikisuplementos.Models;
+using System.ComponentModel.DataAnnotations;
 
-public class SuplementosModel
+namespace wikisuplementos.Models
 {
-    public string? RequestId { get; set; }
-
-    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    public class SuplementosModel
+    {
+        [Key]
+        public int Id { get; set; }
+        
+        public string? Nome { get; set; }  // Propriedades anuláveis
+        public decimal Preco { get; set; }
+        public string? Descricao { get; set; }
+        public string? LinkFoto { get; set; }
+        public string? Grupo { get; set; }
+        public string? Fabricante { get; set; }
+    }
 }

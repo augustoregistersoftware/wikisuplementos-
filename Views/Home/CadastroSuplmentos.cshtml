@@ -1,3 +1,5 @@
+@model wikisuplementos.Models.SuplementosModel
+
 @{
     Layout = null; // Isso impedirá que a view use qualquer layout compartilhado
 }
@@ -73,18 +75,21 @@
 <body>
     <div class="container">
         <h1>Cadastro de Suplemento</h1>
-        <form>
-            <label for="name">Nome</label>
-            <input type="text" id="name" name="name" required>
+        <form asp-action="Create" asp-controller="Suplementos" method="post">
+            <label asp-for="Nome"></label>
+            <input asp-for="Nome" type="text" required>
 
-            <label for="description">Descrição</label>
-            <textarea id="description" name="description" required></textarea>
+            <label asp-for="Descricao"></label>
+            <textarea asp-for="Descricao" required></textarea>
 
-            <label for="photo">Link da Foto</label>
-            <input type="text" id="photo" name="photo" required>
+            <label asp-for="LinkFoto"></label>
+            <input asp-for="LinkFoto" type="text" required>
 
-            <label for="brand">Grupo</label>
-            <input type="text" id="brand" name="brand" required>
+            <label asp-for="Grupo"></label>
+            <input asp-for="Grupo" type="text" required>
+
+            <label asp-for="Fabricante"></label>
+            <input asp-for="Fabricante" type="text" required>
 
             <button type="submit">Cadastrar</button>
         </form>
