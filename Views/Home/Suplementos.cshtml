@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model IEnumerable<wikisuplementos.Models.SuplementosModel>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -140,49 +142,19 @@
                 </select>
             </div>
             <div class="supplements">
-                <div class="supplement-card proteinas">
-                    <img src="https://images.tcdn.com.br/img/img_prod/767774/hyper_whey_900g_creatine_power_300g_767_1_60fd5a41bc1ce6b2ea366f799e7d8d39.png" alt="Suplemento 1">
-                    <div class="card-content">
-                        <h3>Whey Protein</h3>
-                        <p>O Whey Protein é uma proteína derivada do soro do leite. Ideal para ganho de massa muscular e recuperação pós-treino.</p>
-                        <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-check"></i></a>
+                @foreach (var suplemento in Model)
+                {
+                    <div class="supplement-card @(suplemento.Grupo?.ToLower() ?? "unknown")">
+                        <img src="@suplemento.LinkFoto" alt="@suplemento.Nome ?? "Sem Nome"">
+                        <div class="card-content">
+                            <h3>@(suplemento.Nome ?? "Sem Nome")</h3>
+                            <p>@(suplemento.Descricao ?? "Sem Descrição")</p>
+                            <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-circle-info"></i></a>
+                            <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                            <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                        </div>
                     </div>
-                </div>
-                <div class="supplement-card proteinas">
-                    <img src="https://via.placeholder.com/300x200" alt="Suplemento 2">
-                    <div class="card-content">
-                        <h3>Creatina</h3>
-                        <p>A Creatina é um suplemento que ajuda a melhorar o desempenho atlético e a aumentar a força muscular.</p>
-                    </div>
-                </div>
-                <div class="supplement-card aminoacidos">
-                    <img src="https://via.placeholder.com/300x200" alt="Suplemento 3">
-                    <div class="card-content">
-                        <h3>BCAA</h3>
-                        <p>Os BCAAs são aminoácidos essenciais que ajudam na recuperação muscular e na redução da fadiga durante os treinos.</p>
-                    </div>
-                </div>
-                <div class="supplement-card aminoacidos">
-                    <img src="https://via.placeholder.com/300x200" alt="Suplemento 4">
-                    <div class="card-content">
-                        <h3>Glutamina</h3>
-                        <p>A Glutamina é um aminoácido que auxilia na recuperação muscular e no fortalecimento do sistema imunológico.</p>
-                    </div>
-                </div>
-                <div class="supplement-card termogenicos">
-                    <img src="https://via.placeholder.com/300x200" alt="Suplemento 5">
-                    <div class="card-content">
-                        <h3>Termogênicos</h3>
-                        <p>Os termogênicos ajudam a acelerar o metabolismo, aumentando a queima de gordura e melhorando a performance.</p>
-                    </div>
-                </div>
-                <div class="supplement-card vitaminas">
-                    <img src="https://via.placeholder.com/300x200" alt="Suplemento 6">
-                    <div class="card-content">
-                        <h3>Ômega 3</h3>
-                        <p>O Ômega 3 é um ácido graxo essencial que oferece benefícios para a saúde cardiovascular e cognitiva.</p>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </main>
