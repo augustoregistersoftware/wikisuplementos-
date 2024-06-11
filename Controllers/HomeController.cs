@@ -30,6 +30,29 @@ public class HomeController : Controller
         return View(suplementos);
     }
 
+    [HttpPost]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> DeleteSuplemento(int id)
+    {
+        try
+        {
+            var suplemento = await _context.Suplementos.FindAsync(id);
+            if (suplemento == null)
+            {
+                return NotFound();
+            }
+
+            _context.Suplementos.Remove(suplemento);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro ao excluir suplemento com ID {Id}", id);
+            return StatusCode(500, "Erro interno do servidor");
+        }
+    }
+
     public IActionResult AtletasTreinadores()
     {
         return View();

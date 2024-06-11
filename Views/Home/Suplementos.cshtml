@@ -125,7 +125,6 @@
     </style>
 </head>
 <body>
-
     <main>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -144,14 +143,14 @@
             <div class="supplements">
                 @foreach (var suplemento in Model)
                 {
-                    <div class="supplement-card @(suplemento.Grupo?.ToLower() ?? "unknown")">
+                    <div class="supplement-card @(suplemento.Grupo?.ToLower() ?? "unknown")" id="suplemento-@suplemento.Id">
                         <img src="@suplemento.LinkFoto" alt="@suplemento.Nome ?? "Sem Nome"">
                         <div class="card-content">
                             <h3>@(suplemento.Nome ?? "Sem Nome")</h3>
                             <p>@(suplemento.Descricao ?? "Sem Descrição")</p>
-                            <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-circle-info"></i></a>
-                            <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
-                            <a title="Ativar Quarto" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                            <a title="Info Suplemento" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-circle-info"></i></a>
+                            <a title="Editar Suplemento" href="javascript:goEdit()" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                            <a title="Excluir Suplemento" href="javascript:deleteSuplemento(@suplemento.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
                         </div>
                     </div>
                 }
@@ -170,6 +169,46 @@
                 text: "Growth, DarkLab, Probiotica, MaxSuplementos",
                 icon: "info"
             });
+        }
+
+        function deleteSuplemento(id) {
+            if (confirm("Tem certeza que deseja excluir este suplemento?")) {
+                console.log(`Iniciando a exclusão do suplemento com ID: ${id}`);
+                fetch(`/Home/DeleteSuplemento/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Resposta recebida do servidor:', response);
+                    if (response.ok) {
+                        document.getElementById(`suplemento-${id}`).remove();
+                        Swal.fire({
+                            title: "Sucesso!",
+                            text: "Suplemento excluído com sucesso.",
+                            icon: "success"
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            console.log('Erro ao excluir o suplemento:', text);
+                            Swal.fire({
+                                title: "Erro!",
+                                text: text || "Não foi possível excluir o suplemento.",
+                                icon: "error"
+                            });
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na solicitação de exclusão:', error);
+                    Swal.fire({
+                        title: "Erro!",
+                        text: "Ocorreu um erro ao excluir o suplemento.",
+                        icon: "error"
+                    });
+                });
+            }
         }
 
         document.getElementById('categoryFilter').addEventListener('change', function() {
