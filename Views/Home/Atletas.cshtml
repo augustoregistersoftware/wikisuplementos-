@@ -1,0 +1,92 @@
+@model IEnumerable<wikisuplementos.Models.AtletaModel>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WikiSuplementos - Atletas</title>
+    <style>
+        /* Estilos omitidos para brevidade */
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <h2>Informações sobre Atletas</h2>
+            <div class="actions">
+                <a asp-area="" asp-controller="Home" asp-action="CadastroAtleta">Adicionar Atleta</a>
+            </div>
+            <div class="supplements">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var atleta in Model)
+                    {
+                        <div class="supplement-card @(atleta.Uf?.ToLower() ?? "unknown")" id="atleta-@atleta.Id">
+                            <img src="@atleta.LinkFoto" alt="@atleta.Nome ?? "Sem Nome"">
+                            <div class="card-content">
+                                <h3>@(atleta.Nome ?? "Sem Nome")</h3>
+                                <p>@(atleta.Descricao ?? "Sem Descrição")</p>
+                                <p>Treinador: @(atleta.Treinador?.Nome ?? "Sem Treinador")</p>
+                                <a title="Editar Atleta" href="javascript:goEdit(@atleta.Id, '@atleta.Nome', '@atleta.Descricao', '@atleta.LinkFoto', '@atleta.Uf', @atleta.TreinadorId)" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                                <a title="Excluir atleta" href="javascript:deleteAtleta(@atleta.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Nenhum atleta encontrado.</p>
+                }
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 WikiSuplementos. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script>
+        function goEdit(id, nome, descricao, linkFoto, uf, treinadorId) {
+            // Lógica de edição
+        }
+
+        function deleteAtleta(id) {
+            if (confirm("Tem certeza que deseja excluir este atleta?")) {
+                fetch(`/Home/DeleteAtleta/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById(`atleta-${id}`).remove();
+                        Swal.fire({
+                            title: "Sucesso!",
+                            text: "Atleta excluído com sucesso.",
+                            icon: "success"
+                        });
+                    } else {
+                        response.text().then(text => {
+                            Swal.fire({
+                                title: "Erro!",
+                                text: text || "Não foi possível excluir o atleta.",
+                                icon: "error"
+                            });
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na solicitação de exclusão:', error);
+                    Swal.fire({
+                        title: "Erro!",
+                        text: "Ocorreu um erro ao excluir o atleta.",
+                        icon: "error"
+                    });
+                });
+            }
+        }
+    </script>
+</body>
+</html>

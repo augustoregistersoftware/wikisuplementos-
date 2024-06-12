@@ -1,4 +1,4 @@
-@model IEnumerable<wikisuplementos.Models.TreinadoresModel>
+@model IEnumerable<wikisuplementos.Models.TreinadorModel>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -197,8 +197,22 @@
                             <div class="card-content">
                                 <h3>@(treinador.Nome ?? "Sem Nome")</h3>
                                 <p>@(treinador.Descricao ?? "Sem Descrição")</p>
+                                <p>Atletas:</p>
+                                <ul>
+                                    @if (treinador.Atletas != null && treinador.Atletas.Any())
+                                    {
+                                        foreach (var atleta in treinador.Atletas)
+                                        {
+                                            <li>@atleta.Nome</li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li>Nenhum atleta encontrado.</li>
+                                    }
+                                </ul>
                                 <a title="Editar Treinador" href="javascript:goEdit(@treinador.Id, '@treinador.Nome', '@treinador.Descricao', '@treinador.LinkFoto', '@treinador.Uf')" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
-                                <a title="Excluir treinador" href="javascript:deleteTreinadorAtleta(@treinador.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                <a title="Excluir treinador" href="javascript:deleteTreinador(@treinador.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </div>
                         </div>
                     }

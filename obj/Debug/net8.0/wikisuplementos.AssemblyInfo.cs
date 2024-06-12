@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("wikisuplementos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+74469c98a054971b8ebc474780938062d40999f0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2749b2517044f14110213dd0b45191eb14761d31")]
 [assembly: System.Reflection.AssemblyProductAttribute("wikisuplementos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("wikisuplementos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

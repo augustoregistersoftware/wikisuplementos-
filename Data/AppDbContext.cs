@@ -10,6 +10,18 @@ namespace wikisuplementos.Data
         }
 
         public DbSet<SuplementosModel> Suplementos { get; set; }
-        public DbSet<TreinadoresModel> Treinadores { get; set; }
+        public DbSet<TreinadorModel> Treinadores { get; set; }
+        public DbSet<AtletaModel> Atletas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configuração do relacionamento
+            modelBuilder.Entity<TreinadorModel>()
+                .HasMany(t => t.Atletas)
+                .WithOne(a => a.Treinador)
+                .HasForeignKey(a => a.TreinadorId);
+        }
     }
 }

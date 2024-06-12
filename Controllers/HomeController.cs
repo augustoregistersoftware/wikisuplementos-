@@ -32,8 +32,23 @@ namespace wikisuplementos.Controllers
 
         public async Task<IActionResult> AtletasTreinadores()
         {
-            var treinadores = await _context.Treinadores.ToListAsync();
+            var treinadores = await _context.Treinadores
+                                            .Include(t => t.Atletas)
+                                            .ToListAsync();
+
+            // Inspecione os dados carregados
+            foreach (var treinador in treinadores)
+            {
+                Console.WriteLine($"{treinador.Nome} tem {treinador.Atletas.Count} atletas.");
+            }
+
             return View(treinadores);
+        }
+
+        public async Task<IActionResult> Atletas()
+        {
+            var atletas = await _context.Atletas.Include(a => a.Treinador).ToListAsync();
+            return View(atletas);
         }
 
         [HttpPost]
@@ -84,7 +99,7 @@ namespace wikisuplementos.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> EditTreinador(int id, [FromBody] TreinadoresModel updatedTreinador)
+        public async Task<IActionResult> EditTreinador(int id, [FromBody] TreinadorModel updatedTreinador)
         {
             try
             {
@@ -118,6 +133,11 @@ namespace wikisuplementos.Controllers
         }
 
         public IActionResult CadastroAtletasTreinadores()
+        {
+            return View();
+        }
+
+        public IActionResult CadastroAtleta()
         {
             return View();
         }
