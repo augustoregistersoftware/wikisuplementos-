@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WikiSuplementos - Suplementos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2em 0;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1em;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1em;
+        }
+
+        .actions a, .actions select {
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .actions a {
+            background-color: #28a745;
+            color: white;
+            font-size: 1em;
+        }
+
+        .actions select {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        .supplements {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .supplement-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 30%;
+            margin-bottom: 2em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .supplement-card:hover {
+            transform: scale(1.05);
+        }
+
+        .supplement-card img {
+            width: 100%;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .supplement-card .card-content {
+            padding: 1em;
+        }
+
+        .supplement-card h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        .supplement-card p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <div class="container">
+            <h2>Informações sobre Altetas e Treinadores</h2>
+            <div class="actions">
+                <a asp-area="" asp-controller="Home" asp-action="CadastroAtletasTreinadores">Adicionar Informação</a>
+                <select id="categoryFilter">
+                    <option value="">Filtrar por Categoria</option>
+                    <option value="SP">SP</option>
+                    <option value="aminoacidos">Aminoácidos</option>
+                    <option value="vitaminas">Vitaminas</option>
+                    <option value="termogenicos">Termogênicos</option>
+                </select>
+            </div>
+            <div class="supplements">
+                <div class="supplement-card SP">
+                    <img src="https://uploads.metropoles.com/wp-content/uploads/2023/12/13092945/Renato-Cariani3-1.jpg" alt="Suplemento 1">
+                    <div class="card-content">
+                        <h3>Renato Cariani</h3>
+                        <p>Renato é um dos maiores influenciadores do segmento fitness</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 WikiSuplementos. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script>
+
+
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            var selectedCategory = this.value;
+            var cards = document.querySelectorAll('.supplement-card');
+
+            cards.forEach(function(card) {
+                if (selectedCategory === "" || card.classList.contains(selectedCategory)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

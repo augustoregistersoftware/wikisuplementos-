@@ -1,0 +1,228 @@
+﻿@model IEnumerable<wikisuplementos.Models.SuplementosModel>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WikiSuplementos - Suplementos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2em 0;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1em;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1em;
+        }
+
+        .actions a, .actions select {
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .actions a {
+            background-color: #28a745;
+            color: white;
+            font-size: 1em;
+        }
+
+        .actions select {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        .supplements {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .supplement-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 30%;
+            margin-bottom: 2em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .supplement-card:hover {
+            transform: scale(1.05);
+        }
+
+        .supplement-card img {
+            width: 100%;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .supplement-card .card-content {
+            padding: 1em;
+        }
+
+        .supplement-card h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        .supplement-card p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <div class="container">
+            <h2>Informações sobre Suplementos</h2>
+            <div class="actions">
+                <a asp-area="" asp-controller="Home" asp-action="CadastroSuplmentos">Adicionar Informação</a>
+                <select id="categoryFilter">
+                    <option value="">Filtrar por Categoria</option>
+                    <option value="proteinas">Proteínas</option>
+                    <option value="aminoacidos">Aminoácidos</option>
+                    <option value="vitaminas">Vitaminas</option>
+                    <option value="termogenicos">Termogênicos</option>
+                </select>
+            </div>
+            <div class="supplements">
+                @foreach (var suplemento in Model)
+                {
+                    <div class="supplement-card @(suplemento.Grupo?.ToLower() ?? "unknown")" id="suplemento-@suplemento.Id">
+                        <img src="@suplemento.LinkFoto" alt="@suplemento.Nome ?? "Sem Nome"">
+                        <div class="card-content">
+                            <h3>@(suplemento.Nome ?? "Sem Nome")</h3>
+                            <p>@(suplemento.Descricao ?? "Sem Descrição")</p>
+                            <a title="Info Suplemento" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-circle-info"></i></a>
+                            <a title="Editar Suplemento" href="javascript:goEdit()" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                            <a title="Excluir Suplemento" href="javascript:deleteSuplemento(@suplemento.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+  
+        </div>
+    </footer>
+    <script>
+        function goSaiba(){
+            Swal.fire({
+                title: "Marcas Que Fabrica o produto",
+                text: "Growth, DarkLab, Probiotica, MaxSuplementos",
+                icon: "info"
+            });
+        }
+
+        function deleteSuplemento(id) {
+            if (confirm("Tem certeza que deseja excluir este suplemento?")) {
+                console.log(`Iniciando a exclusão do suplemento com ID: ${id}`);
+                fetch(`/Home/DeleteSuplemento/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Resposta recebida do servidor:', response);
+                    if (response.ok) {
+                        document.getElementById(`suplemento-${id}`).remove();
+                        Swal.fire({
+                            title: "Sucesso!",
+                            text: "Suplemento excluído com sucesso.",
+                            icon: "success"
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            console.log('Erro ao excluir o suplemento:', text);
+                            Swal.fire({
+                                title: "Erro!",
+                                text: text || "Não foi possível excluir o suplemento.",
+                                icon: "error"
+                            });
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na solicitação de exclusão:', error);
+                    Swal.fire({
+                        title: "Erro!",
+                        text: "Ocorreu um erro ao excluir o suplemento.",
+                        icon: "error"
+                    });
+                });
+            }
+        }
+
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            var selectedCategory = this.value;
+            var cards = document.querySelectorAll('.supplement-card');
+
+            cards.forEach(function(card) {
+                if (selectedCategory === "" || card.classList.contains(selectedCategory)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
