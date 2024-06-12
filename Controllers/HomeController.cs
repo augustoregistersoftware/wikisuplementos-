@@ -82,6 +82,36 @@ namespace wikisuplementos.Controllers
             }
         }
 
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> EditTreinador(int id, [FromBody] TreinadoresModel updatedTreinador)
+        {
+            try
+            {
+                var treinador = await _context.Treinadores.FindAsync(id);
+                if (treinador == null)
+                {
+                    return NotFound();
+                }
+
+                treinador.Nome = updatedTreinador.Nome;
+                treinador.Descricao = updatedTreinador.Descricao;
+                treinador.LinkFoto = updatedTreinador.LinkFoto;
+                treinador.Uf = updatedTreinador.Uf;
+
+                _context.Treinadores.Update(treinador);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao editar treinador com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+
         public IActionResult CadastroSuplmentos()
         {
             return View();
