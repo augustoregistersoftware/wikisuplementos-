@@ -178,7 +178,8 @@
         <div class="container">
             <h2>Informações sobre Atletas e Treinadores</h2>
             <div class="actions">
-                <a asp-area="" asp-controller="Home" asp-action="CadastroAtletasTreinadores">Adicionar Informação</a>
+                <a asp-area="" asp-controller="Home" asp-action="CadastroAtletasTreinadores">Adicionar Treinador</a>
+                <a asp-area="" asp-controller="Home" asp-action="CadastroAtletasTreinadores">Adicionar Atleta</a>
                 <select id="categoryFilter">
                     <option value="">Filtrar por Categoria</option>
                     <option value="SP">SP</option>
@@ -246,6 +247,46 @@
         </div>
     </div>
     <script>
+        function deleteTreinador(id) {
+            if (confirm("Tem certeza que deseja excluir este Treinador?")) {
+                console.log(`Iniciando a exclusão do Treinador com ID: ${id}`);
+                fetch(`/Home/DeleteTreinadorAtleta/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Resposta recebida do servidor:', response);
+                    if (response.ok) {
+                        document.getElementById(`treinador-${id}`).remove();
+                        Swal.fire({
+                            title: "Sucesso!",
+                            text: "Treinador excluído com sucesso.",
+                            icon: "success"
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            console.log('Erro ao excluir o Treinador:', text);
+                            Swal.fire({
+                                title: "Erro!",
+                                text: text || "Não foi possível excluir o Treinador.",
+                                icon: "error"
+                            });
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na solicitação de exclusão:', error);
+                    Swal.fire({
+                        title: "Erro!",
+                        text: "Ocorreu um erro ao excluir o Treinador.",
+                        icon: "error"
+                    });
+                });
+            }
+        }
+
         function goEdit(id, nome, descricao, linkFoto, uf) {
             document.getElementById('editId').value = id;
             document.getElementById('editNome').value = nome;

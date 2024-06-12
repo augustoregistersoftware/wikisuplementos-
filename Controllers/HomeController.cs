@@ -126,6 +126,36 @@ namespace wikisuplementos.Controllers
             }
         }
 
+                [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> EditSuplemento(int id, [FromBody] SuplementosModel updatedSuplementos)
+        {
+            try
+            {
+                var suplemento = await _context.Suplementos.FindAsync(id);
+                if (suplemento == null)
+                {
+                    return NotFound();
+                }
+
+                suplemento.Nome = updatedSuplementos.Nome;
+                suplemento.Descricao = updatedSuplementos.Descricao;
+                suplemento.Grupo = updatedSuplementos.Grupo;
+                suplemento.LinkFoto = updatedSuplementos.LinkFoto;
+                suplemento.Fabricante = updatedSuplementos.Fabricante;
+
+                _context.Suplementos.Update(suplemento);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao editar suplemento com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
 
         public IActionResult CadastroSuplmentos()
         {
