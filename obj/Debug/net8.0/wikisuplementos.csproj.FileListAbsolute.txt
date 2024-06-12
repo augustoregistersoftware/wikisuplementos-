@@ -251,3 +251,4 @@ C:\wikisuplementos\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.Win32.Syst
 C:\wikisuplementos\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 C:\wikisuplementos\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\wikisuplementos\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+C:\wikisuplementos\obj\Debug\net8.0\wikisuplementos.sourcelink.json
