@@ -1,0 +1,121 @@
+@{
+    Layout = null; // Isso impedirá que a view use qualquer layout compartilhado
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Suplemento - WikiSuplementos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.7em;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Suplemento</h1>
+        <form>
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="description">Descrição</label>
+            <input type="text" id="description" name="description" required>
+
+            <label for="photo">Link da Foto</label>
+            <input type="text" id="photo" name="photo" required>
+
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" name="cep" required onblur="fetchAddress()">
+
+            <label for="cidade">Cidade</label>
+            <input type="text" id="cidade" name="cidade" required>
+
+            <label for="uf">UF</label>
+            <input type="text" id="uf" name="uf" required>
+
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <script>
+        function fetchAddress() {
+            var cep = document.getElementById('cep').value;
+            if (cep.length === 8) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('cidade').value = data.localidade;
+                            document.getElementById('uf').value = data.uf;
+                        } else {
+                            alert("CEP não encontrado.");
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar o CEP:', error));
+            } else {
+                alert("CEP inválido.");
+            }
+        }
+    </script>
+</body>
+</html>
