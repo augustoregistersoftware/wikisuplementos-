@@ -10,5 +10,6 @@ namespace wikisuplementos.Data
         }
 
         public DbSet<SuplementosModel> Suplementos { get; set; }
+        public DbSet<TreinadoresModel> Treinadores { get; set; }
     }
 }

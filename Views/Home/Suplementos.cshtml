@@ -148,7 +148,7 @@
                         <div class="card-content">
                             <h3>@(suplemento.Nome ?? "Sem Nome")</h3>
                             <p>@(suplemento.Descricao ?? "Sem Descrição")</p>
-                            <a title="Info Suplemento" href="javascript:goSaiba()" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-circle-info"></i></a>
+                            <a title="Info Suplemento" href="javascript:goSaiba('@suplemento.Fabricante')" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-circle-info"></i></a>
                             <a title="Editar Suplemento" href="javascript:goEdit()" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
                             <a title="Excluir Suplemento" href="javascript:deleteSuplemento(@suplemento.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
                         </div>
@@ -163,10 +163,10 @@
         </div>
     </footer>
     <script>
-        function goSaiba(){
+        function goSaiba(fabricante){
             Swal.fire({
                 title: "Marcas Que Fabrica o produto",
-                text: "Growth, DarkLab, Probiotica, MaxSuplementos",
+                text: fabricante,
                 icon: "info"
             });
         }

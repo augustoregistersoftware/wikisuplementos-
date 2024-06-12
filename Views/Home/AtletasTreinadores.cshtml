@@ -1,9 +1,11 @@
+@model IEnumerable<wikisuplementos.Models.TreinadoresModel>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WikiSuplementos - Suplementos</title>
+    <title>WikiSuplementos - Treinadores</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -128,7 +130,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <div class="container">
-            <h2>Informações sobre Altetas e Treinadores</h2>
+            <h2>Informações sobre Atletas e Treinadores</h2>
             <div class="actions">
                 <a asp-area="" asp-controller="Home" asp-action="CadastroAtletasTreinadores">Adicionar Informação</a>
                 <select id="categoryFilter">
@@ -140,14 +142,25 @@
                 </select>
             </div>
             <div class="supplements">
-                <div class="supplement-card SP">
-                    <img src="https://uploads.metropoles.com/wp-content/uploads/2023/12/13092945/Renato-Cariani3-1.jpg" alt="Suplemento 1">
-                    <div class="card-content">
-                        <h3>Renato Cariani</h3>
-                        <p>Renato é um dos maiores influenciadores do segmento fitness</p>
-                    </div>
-                </div>
-                
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var treinador in Model)
+                    {
+                        <div class="supplement-card @(treinador.Uf?.ToLower() ?? "unknown")" id="treinador-@treinador.Id">
+                            <img src="@treinador.LinkFoto" alt="@treinador.Nome ?? "Sem Nome"">
+                            <div class="card-content">
+                                <h3>@(treinador.Nome ?? "Sem Nome")</h3>
+                                <p>@(treinador.Descricao ?? "Sem Descrição")</p>
+                                <a title="Editar Treinador" href="javascript:goEdit()" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                                <a title="Excluir treinador" href="javascript:deleteTreinadorAtleta(@treinador.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Nenhum treinador encontrado.</p>
+                }
             </div>
         </div>
     </main>
@@ -157,7 +170,49 @@
         </div>
     </footer>
     <script>
+        function goEdit() {
+            console.log("Função de edição não implementada.");
+        }
 
+        function deleteTreinadorAtleta(id) {
+            if (confirm("Tem certeza que deseja excluir este treinador?")) {
+                console.log(`Iniciando a exclusão do treinador com ID: ${id}`);
+                fetch(`/Home/DeleteTreinadorAtleta/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Resposta recebida do servidor:', response);
+                    if (response.ok) {
+                        document.getElementById(`treinador-${id}`).remove();
+                        Swal.fire({
+                            title: "Sucesso!",
+                            text: "Treinador excluído com sucesso.",
+                            icon: "success"
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            console.log('Erro ao excluir o treinador:', text);
+                            Swal.fire({
+                                title: "Erro!",
+                                text: text || "Não foi possível excluir o treinador.",
+                                icon: "error"
+                            });
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na solicitação de exclusão:', error);
+                    Swal.fire({
+                        title: "Erro!",
+                        text: "Ocorreu um erro ao excluir o treinador.",
+                        icon: "error"
+                    });
+                });
+            }
+        }
 
         document.getElementById('categoryFilter').addEventListener('change', function() {
             var selectedCategory = this.value;
