@@ -168,6 +168,31 @@
             border-radius: 5px;
         }
 
+            .btn {
+        padding: 0.5em 1em;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        display: inline-block;
+        font-size: 1em;
+        margin: 0.2em 0;
+    }
+
+    .btn-sm {
+        padding: 0.25em 0.5em;
+        font-size: 0.8em;
+    }
+
+    .btn-details {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-details:hover {
+        background-color: #0056b3;
+    }
+
     </style>
 </head>
 <body>
@@ -194,28 +219,29 @@
                     foreach (var treinador in Model)
                     {
                         <div class="supplement-card @(treinador.Uf?.ToLower() ?? "unknown")" id="treinador-@treinador.Id">
-                            <img src="@treinador.LinkFoto" alt="@treinador.Nome ?? "Sem Nome"">
-                            <div class="card-content">
-                                <h3>@(treinador.Nome ?? "Sem Nome")</h3>
-                                <p>@(treinador.Descricao ?? "Sem Descrição")</p>
-                                <p>Atletas:</p>
-                                <ul>
-                                    @if (treinador.Atletas != null && treinador.Atletas.Any())
+                        <img src="@treinador.LinkFoto" alt="@treinador.Nome ?? "Sem Nome"">
+                        <div class="card-content">
+                            <h3>@(treinador.Nome ?? "Sem Nome")</h3>
+                            <p>@(treinador.Descricao ?? "Sem Descrição")</p>
+                            <p>Atletas:</p>
+                            <ul>
+                                @if (treinador.Atletas != null && treinador.Atletas.Any())
+                                {
+                                    foreach (var atleta in treinador.Atletas)
                                     {
-                                        foreach (var atleta in treinador.Atletas)
-                                        {
-                                            <li>@atleta.Nome</li>
-                                        }
+                                        <li>@atleta.Nome <button class="btn btn-sm btn-details" onclick="getAtletaDetails(@atleta.Id)">Detalhes</button></li>
                                     }
-                                    else
-                                    {
-                                        <li>Nenhum atleta encontrado.</li>
-                                    }
-                                </ul>
-                                <a title="Editar Treinador" href="javascript:goEdit(@treinador.Id, '@treinador.Nome', '@treinador.Descricao', '@treinador.LinkFoto', '@treinador.Uf')" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
-                                <a title="Excluir treinador" href="javascript:deleteTreinador(@treinador.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
-                            </div>
+                                }
+                                else
+                                {
+                                    <li>Nenhum atleta encontrado.</li>
+                                }
+                            </ul>
+                            <a title="Editar Treinador" href="javascript:goEdit(@treinador.Id, '@treinador.Nome', '@treinador.Descricao', '@treinador.LinkFoto', '@treinador.Uf')" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                            <a title="Excluir treinador" href="javascript:deleteTreinador(@treinador.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
                         </div>
+                    </div>
+
                     }
                 }
                 else
@@ -356,6 +382,36 @@
                 Swal.fire({
                     title: "Erro!",
                     text: "Ocorreu um erro ao editar o treinador.",
+                    icon: "error"
+                });
+            });
+        }
+
+        function getAtletaDetails(atletaId) {
+            fetch(`/Home/GetAtletaDetails/${atletaId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Atleta Details:', data);
+
+                Swal.fire({
+                    title: data.nome,
+                    text: `Descrição: ${data.descricao}\nUF: ${data.uf}`,
+                    imageUrl: `${data.linkfoto}`,
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: "Custom image"
+                    });
+            })
+            .catch(error => {
+                console.error('Erro ao buscar detalhes do atleta:', error);
+                Swal.fire({
+                    title: "Erro!",
+                    text: "Ocorreu um erro ao buscar os detalhes do atleta.",
                     icon: "error"
                 });
             });

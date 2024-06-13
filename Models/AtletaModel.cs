@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace wikisuplementos.Models
 {
@@ -19,6 +20,8 @@ namespace wikisuplementos.Models
 
         // Chave estrangeira para Treinador
         public int TreinadorId { get; set; }
+        
+        [JsonIgnore]
         public TreinadorModel Treinador { get; set; }
     }
 }

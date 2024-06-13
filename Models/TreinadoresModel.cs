@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace wikisuplementos.Models
 {
@@ -19,6 +20,7 @@ namespace wikisuplementos.Models
         public string? Cidade { get; set; }
         public string? Uf { get; set; }
 
+        [JsonIgnore]
         public ICollection<AtletaModel> Atletas { get; set; }
     }
 }

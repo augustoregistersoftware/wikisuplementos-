@@ -156,6 +156,28 @@ namespace wikisuplementos.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult GetAtletaDetails(int id)
+        {
+            var atleta = _context.Atletas.FirstOrDefault(a => a.Id == id);
+            if (atleta == null)
+            {
+                return NotFound("Atleta não encontrado.");
+            }
+
+            var atletaDetails = new
+            {
+                nome = atleta.Nome,
+                descricao = atleta.Descricao,
+                linkfoto = atleta.LinkFoto,
+                uf = atleta.Uf,
+                // Adicione outras propriedades necessárias
+            };
+
+            return Json(atletaDetails);
+        }
+
+
 
         public IActionResult CadastroSuplmentos()
         {
