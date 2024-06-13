@@ -1,6 +1,4 @@
-﻿@model IEnumerable<wikisuplementos.Models.SuplementosModel>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -160,7 +158,7 @@
             cursor: pointer;
         }
 
-        .modal input, .modal textarea {
+        .modal input, .modal textarea, .modal select {
             width: 100%;
             padding: 0.5em;
             margin-bottom: 1em;
@@ -217,7 +215,12 @@
             <label for="editDescricao">Descrição</label>
             <textarea id="editDescricao"></textarea>
             <label for="editGrupo">Grupo</label>
-            <input type="text" id="editGrupo">
+            <select id="editGrupo">
+                <option value="proteinas">Proteínas</option>
+                <option value="aminoacidos">Aminoácidos</option>
+                <option value="vitaminas">Vitaminas</option>
+                <option value="termogenicos">Termogênicos</option>
+            </select>
             <label for="editLinkFoto">Link da Foto</label>
             <input type="text" id="editLinkFoto">
             <label for="editFabricante">Fabricante</label>
@@ -283,6 +286,7 @@
                     document.querySelector(`#suplemento-${id} h3`).innerText = nome;
                     document.querySelector(`#suplemento-${id} p`).innerText = descricao;
                     document.querySelector(`#suplemento-${id} img`).src = linkFoto;
+                    document.querySelector(`#suplemento-${id}`).className = `supplement-card ${grupo.toLowerCase()}`;
                 } else {
                     response.text().then(text => {
                         Swal.fire({
