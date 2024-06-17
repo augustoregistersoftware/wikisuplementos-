@@ -3,8 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using wikisuplementos.Models;
 using wikisuplementos.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace wikisuplementos.Controllers
 {
@@ -23,6 +27,27 @@ namespace wikisuplementos.Controllers
         {
             return View();
         }
+
+        public IActionResult Fornecedores()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> Fornecedor()
+    {
+        List<FornecedorSuplemento> fornecedores = new List<FornecedorSuplemento>();
+        using (var client = new HttpClient())
+        {
+            client.BaseAddress = new Uri("https://localhost:44393/");
+            var response = await client.GetAsync("api/FornecedorSuplemento/selecionarTodos");
+            if (response.IsSuccessStatusCode)
+            {
+                var dados = await response.Content.ReadAsStringAsync();
+                fornecedores = JsonConvert.DeserializeObject<List<FornecedorSuplemento>>(dados);
+            }
+        }
+        return View(fornecedores);
+    }
 
         public async Task<IActionResult> Suplementos()
         {
@@ -189,10 +214,11 @@ namespace wikisuplementos.Controllers
             return View();
         }
 
-        public IActionResult CadastroAtleta()
+        public IActionResult CadastroAtletas()
         {
             return View();
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

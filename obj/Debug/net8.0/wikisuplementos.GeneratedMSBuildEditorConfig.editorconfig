@@ -34,12 +34,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBdGxldGFzVHJlaW5hZG9yZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/wikisuplementos/Views/Home/CadastroAtletas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWRhc3Ryb0F0bGV0YXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/wikisuplementos/Views/Home/CadastroAtletasTreinadores.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWRhc3Ryb0F0bGV0YXNUcmVpbmFkb3Jlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/wikisuplementos/Views/Home/CadastroSuplmentos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWRhc3Ryb1N1cGxtZW50b3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/wikisuplementos/Views/Home/Fornecedor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxGb3JuZWNlZG9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/wikisuplementos/Views/Home/Index.cshtml]
