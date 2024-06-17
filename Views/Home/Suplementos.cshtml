@@ -1,6 +1,4 @@
-﻿@model IEnumerable<wikisuplementos.Models.SuplementosModel>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -122,6 +120,51 @@
             text-align: center;
             padding: 1em 0;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            padding-top: 60px; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal input, .modal textarea, .modal select {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -149,7 +192,7 @@
                             <h3>@(suplemento.Nome ?? "Sem Nome")</h3>
                             <p>@(suplemento.Descricao ?? "Sem Descrição")</p>
                             <a title="Info Suplemento" href="javascript:goSaiba('@suplemento.Fabricante')" class="btn btn-info btn-sm btn-sucess"><i class="fa-solid fa-circle-info"></i></a>
-                            <a title="Editar Suplemento" href="javascript:goEdit()" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                            <a title="Editar Treinador" href="javascript:goEdit(@suplemento.Id,'@suplemento.Nome','@suplemento.Descricao','@suplemento.Grupo','@suplemento.LinkFoto','@suplemento.Fabricante')" class="btn btn-info btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>
                             <a title="Excluir Suplemento" href="javascript:deleteSuplemento(@suplemento.Id)" class="btn btn-info btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
                         </div>
                     </div>
@@ -162,7 +205,108 @@
   
         </div>
     </footer>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Editar Suplemento</h2>
+            <input type="hidden" id="editId">
+            <label for="editNome">Nome</label>
+            <input type="text" id="editNome">
+            <label for="editDescricao">Descrição</label>
+            <textarea id="editDescricao"></textarea>
+            <label for="editGrupo">Grupo</label>
+            <select id="editGrupo">
+                <option value="proteinas">Proteínas</option>
+                <option value="aminoacidos">Aminoácidos</option>
+                <option value="vitaminas">Vitaminas</option>
+                <option value="termogenicos">Termogênicos</option>
+            </select>
+            <label for="editLinkFoto">Link da Foto</label>
+            <input type="text" id="editLinkFoto">
+            <label for="editFabricante">Fabricante</label>
+            <input type="text" id="editFabricante">
+            <button onclick="saveEdit()">Salvar</button>
+        </div>
+    </div>
     <script>
+        function goEdit(id, nome, descricao, grupo,linkFoto, fabricante) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editNome').value = nome;
+            document.getElementById('editDescricao').value = descricao;
+            document.getElementById('editGrupo').value = grupo;
+            document.getElementById('editLinkFoto').value = linkFoto;
+            document.getElementById('editFabricante').value = fabricante;
+            document.getElementById('editModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('editModal')) {
+                document.getElementById('editModal').style.display = "none";
+            }
+        }
+
+        function saveEdit() {
+            var id = document.getElementById('editId').value;
+            var nome = document.getElementById('editNome').value;
+            var descricao = document.getElementById('editDescricao').value;
+            var grupo = document.getElementById('editGrupo').value;
+            var linkFoto = document.getElementById('editLinkFoto').value;
+            var fabricante = document.getElementById('editFabricante').value;
+
+            var updatedTreinador = {
+                id: id,
+                nome: nome,
+                descricao: descricao,
+                grupo: grupo,
+                linkFoto: linkFoto,
+                fabricante: fabricante
+            };
+
+            fetch(`/Home/EditSuplemento/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedTreinador)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Atualizar os dados na interface sem recarregar a página, se necessário
+                    Swal.fire({
+                        title: "Sucesso!",
+                        text: "Suplemento editado com sucesso.",
+                        icon: "success"
+                    });
+                    closeModal();
+                    // Atualiza a UI com os novos dados
+                    document.querySelector(`#suplemento-${id} h3`).innerText = nome;
+                    document.querySelector(`#suplemento-${id} p`).innerText = descricao;
+                    document.querySelector(`#suplemento-${id} img`).src = linkFoto;
+                    document.querySelector(`#suplemento-${id}`).className = `supplement-card ${grupo.toLowerCase()}`;
+                } else {
+                    response.text().then(text => {
+                        Swal.fire({
+                            title: "Erro!",
+                            text: text || "Não foi possível editar o Suplemento.",
+                            icon: "error"
+                        });
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Erro na solicitação de edição:', error);
+                Swal.fire({
+                    title: "Erro!",
+                    text: "Ocorreu um erro ao editar o Suplemento.",
+                    icon: "error"
+                });
+            });
+        }
+
         function goSaiba(fabricante){
             Swal.fire({
                 title: "Marcas Que Fabrica o produto",

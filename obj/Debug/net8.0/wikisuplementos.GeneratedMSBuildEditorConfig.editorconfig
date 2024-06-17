@@ -30,6 +30,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBdGxldGFzVHJlaW5hZG9yZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/wikisuplementos/Views/Home/CadastroAtletas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWRhc3Ryb0F0bGV0YXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/wikisuplementos/Views/Home/CadastroAtletasTreinadores.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWRhc3Ryb0F0bGV0YXNUcmVpbmFkb3Jlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wikisuplementos.Data;
 
@@ -10,9 +11,11 @@ using wikisuplementos.Data;
 namespace wikisuplementos.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240612121513_AddTreinadores")]
+    partial class AddTreinadores
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,37 +23,6 @@ namespace wikisuplementos.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("wikisuplementos.Models.AtletaModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LinkFoto")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TreinadorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Uf")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TreinadorId");
-
-                    b.ToTable("Atletas");
-                });
 
             modelBuilder.Entity("wikisuplementos.Models.SuplementosModel", b =>
                 {
@@ -83,7 +55,7 @@ namespace wikisuplementos.Migrations
                     b.ToTable("Suplementos");
                 });
 
-            modelBuilder.Entity("wikisuplementos.Models.TreinadorModel", b =>
+            modelBuilder.Entity("wikisuplementos.Models.TreinadoresModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,22 +84,6 @@ namespace wikisuplementos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Treinadores");
-                });
-
-            modelBuilder.Entity("wikisuplementos.Models.AtletaModel", b =>
-                {
-                    b.HasOne("wikisuplementos.Models.TreinadorModel", "Treinador")
-                        .WithMany("Atletas")
-                        .HasForeignKey("TreinadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Treinador");
-                });
-
-            modelBuilder.Entity("wikisuplementos.Models.TreinadorModel", b =>
-                {
-                    b.Navigation("Atletas");
                 });
 #pragma warning restore 612, 618
         }

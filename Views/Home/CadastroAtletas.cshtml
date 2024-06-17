@@ -1,4 +1,4 @@
-@model wikisuplementos.Models.TreinadorModel
+@model wikisuplementos.Models.AtletaModel
 @{
     Layout = null; // Isso impedirá que a view use qualquer layout compartilhado
 }
@@ -74,7 +74,7 @@
 <body>
     <div class="container">
         <h1>Cadastro de Suplemento</h1>
-        <form asp-action="Create" asp-controller="Treinador" method="post">
+        <form asp-action="CreateAtleta" asp-controller="Treinador" method="post">
             <label asp-for="Nome"></label>
             <input asp-for="Nome" type="text" required>
 
@@ -84,39 +84,16 @@
             <label asp-for="LinkFoto"></label>
             <input asp-for="LinkFoto" type="text" required>
 
-            <label asp-for="Cep" for="cep"></label>
-            <input asp-for="Cep" type="text" id="cep" name="cep" required onblur="fetchAddress()">
-
-            <label asp-for="Cidade"></label>
-            <input asp-for="Cidade" type="text" id="cidade" required>
-
             <label asp-for="Uf"></label>
-            <input asp-for="Uf" type="text" id="uf" required>
+            <input asp-for="Uf" type="text" required>
+
+            <label asp-for="TreinadorId"></label>
+            <input asp-for="TreinadorId" type="text" required>
 
 
             <button type="submit">Cadastrar</button>
         </form>
     </div>
 
-    <script>
-        function fetchAddress() {
-            var cep = document.getElementById('cep').value;
-            if (cep.length === 8) {
-                fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.erro) {
-                            document.getElementById('cidade').value = data.localidade;
-                            document.getElementById('uf').value = data.uf;
-                        } else {
-                            alert("CEP não encontrado.");
-                        }
-                    })
-                    .catch(error => console.error('Erro ao buscar o CEP:', error));
-            } else {
-                alert("CEP inválido.");
-            }
-        }
-    </script>
 </body>
 </html>

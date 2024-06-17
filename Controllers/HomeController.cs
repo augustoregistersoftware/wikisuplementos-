@@ -32,8 +32,23 @@ namespace wikisuplementos.Controllers
 
         public async Task<IActionResult> AtletasTreinadores()
         {
-            var treinadores = await _context.Treinadores.ToListAsync();
+            var treinadores = await _context.Treinadores
+                                            .Include(t => t.Atletas)
+                                            .ToListAsync();
+
+            // Inspecione os dados carregados
+            foreach (var treinador in treinadores)
+            {
+                Console.WriteLine($"{treinador.Nome} tem {treinador.Atletas.Count} atletas.");
+            }
+
             return View(treinadores);
+        }
+
+        public async Task<IActionResult> Atletas()
+        {
+            var atletas = await _context.Atletas.Include(a => a.Treinador).ToListAsync();
+            return View(atletas);
         }
 
         [HttpPost]
@@ -82,6 +97,88 @@ namespace wikisuplementos.Controllers
             }
         }
 
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> EditTreinador(int id, [FromBody] TreinadorModel updatedTreinador)
+        {
+            try
+            {
+                var treinador = await _context.Treinadores.FindAsync(id);
+                if (treinador == null)
+                {
+                    return NotFound();
+                }
+
+                treinador.Nome = updatedTreinador.Nome;
+                treinador.Descricao = updatedTreinador.Descricao;
+                treinador.LinkFoto = updatedTreinador.LinkFoto;
+                treinador.Uf = updatedTreinador.Uf;
+
+                _context.Treinadores.Update(treinador);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao editar treinador com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+                [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> EditSuplemento(int id, [FromBody] SuplementosModel updatedSuplementos)
+        {
+            try
+            {
+                var suplemento = await _context.Suplementos.FindAsync(id);
+                if (suplemento == null)
+                {
+                    return NotFound();
+                }
+
+                suplemento.Nome = updatedSuplementos.Nome;
+                suplemento.Descricao = updatedSuplementos.Descricao;
+                suplemento.Grupo = updatedSuplementos.Grupo;
+                suplemento.LinkFoto = updatedSuplementos.LinkFoto;
+                suplemento.Fabricante = updatedSuplementos.Fabricante;
+
+                _context.Suplementos.Update(suplemento);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao editar suplemento com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetAtletaDetails(int id)
+        {
+            var atleta = _context.Atletas.FirstOrDefault(a => a.Id == id);
+            if (atleta == null)
+            {
+                return NotFound("Atleta não encontrado.");
+            }
+
+            var atletaDetails = new
+            {
+                nome = atleta.Nome,
+                descricao = atleta.Descricao,
+                linkfoto = atleta.LinkFoto,
+                uf = atleta.Uf,
+                // Adicione outras propriedades necessárias
+            };
+
+            return Json(atletaDetails);
+        }
+
+
+
         public IActionResult CadastroSuplmentos()
         {
             return View();
@@ -91,6 +188,12 @@ namespace wikisuplementos.Controllers
         {
             return View();
         }
+
+        public IActionResult CadastroAtletas()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
