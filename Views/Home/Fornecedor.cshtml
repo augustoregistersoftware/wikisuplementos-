@@ -1,0 +1,98 @@
+@model List<FornecedorSuplemento>
+
+@{
+    ViewBag.Title = "Fornecedores de Suplementos";
+}
+
+<h2>Fornecedores de Suplementos</h2>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Nome Fantasia</th>
+            <th>CNPJ</th>
+            <th>Endereço</th>
+            <th>Produto</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Nome</td>
+                <td>@item.NomeFantasia</td>
+                <td>@item.Cnpj</td>
+                <td>@item.Endereco</td>
+                <td>@item.Produto</td>
+                <td>
+                    <a title="Editar Fornecedor" href="javascript:goEdit(@item.Id, '@Html.Raw(item.Nome.Replace("'", "\\'"))', '@Html.Raw(item.NomeFantasia.Replace("'", "\\'"))', '@Html.Raw(item.Cnpj.Replace("'", "\\'"))', '@Html.Raw(item.Endereco.Replace("'", "\\'"))', '@Html.Raw(item.Produto.Replace("'", "\\'"))')" class="btn btn-info btn-sm btn-warning">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal para Edição -->
+<div id="editModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Conteúdo do modal-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar Fornecedor</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" action="@Url.Action("UpdateFornecedor", "Home")" method="post">
+                    <input type="hidden" name="id" id="editId">
+                    <div class="form-group">
+                        <label for="editNome">Nome:</label>
+                        <input type="text" class="form-control" id="editNome" name="nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="editNomeFantasia">Nome Fantasia:</label>
+                        <input type="text" class="form-control" id="editNomeFantasia" name="nomeFantasia">
+                    </div>
+                    <div class="form-group">
+                        <label for="editCnpj">CNPJ:</label>
+                        <input type="text" class="form-control" id="editCnpj" name="cnpj">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEndereco">Endereço:</label>
+                        <input type="text" class="form-control" id="editEndereco" name="endereco">
+                    </div>
+                    <div class="form-group">
+                        <label for="editProduto">Produto:</label>
+                        <input type="text" class="form-control" id="editProduto" name="produto">
+                    </div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function goEdit(id, nome, nomeFantasia, cnpj, endereco, produto) {
+    $('#editId').val(id);
+    $('#editNome').val(nome);
+    $('#editNomeFantasia').val(nomeFantasia);
+    $('#editCnpj').val(cnpj);
+    $('#editEndereco').val(endereco);
+    $('#editProduto').val(produto);
+    $('#editModal').modal('show');
+}
+</script>
+

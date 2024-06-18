@@ -205,13 +205,6 @@
             <div class="actions">
                 <a asp-area="" asp-controller="Home" asp-action="CadastroAtletasTreinadores">Adicionar Treinador</a>
                 <a asp-area="" asp-controller="Home" asp-action="CadastroAtletas">Adicionar Atleta</a>
-                <select id="categoryFilter">
-                    <option value="">Filtrar por Categoria</option>
-                    <option value="SP">SP</option>
-                    <option value="aminoacidos">Aminoácidos</option>
-                    <option value="vitaminas">Vitaminas</option>
-                    <option value="termogenicos">Termogênicos</option>
-                </select>
             </div>
             <div class="supplements">
                 @if (Model != null && Model.Any())

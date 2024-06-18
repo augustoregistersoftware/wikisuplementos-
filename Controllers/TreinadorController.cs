@@ -32,22 +32,6 @@ namespace NomeDoProjeto.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult CreateAtleta()
-        {
-            return View();
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAtleta(AtletaModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Atletas.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home"); // Redirecione para uma página de sucesso ou lista de suplementos
-            }
-            return View(model);
-        }
     }
 }

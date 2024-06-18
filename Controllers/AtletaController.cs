@@ -5,23 +5,19 @@ using System.Threading.Tasks;
 
 namespace NomeDoProjeto.Controllers
 {
-    public class AtletasController : Controller
+    public class AtletaController : Controller
     {
         private readonly AppDbContext _context;
 
-        public AtletasController(AppDbContext context)
+        public AtletaController(AppDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AtletaModel model)
+        public async Task<IActionResult> CadastroAtleta(AtletaModel model)
         {
             if (ModelState.IsValid)
             {

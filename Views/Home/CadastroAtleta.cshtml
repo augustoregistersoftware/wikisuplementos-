@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Suplemento - WikiSuplementos</title>
+    <title>Cadastro de Atleta - WikiSuplementos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,8 +73,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Cadastro de Suplemento</h1>
-        <form asp-action="CreateAtleta" asp-controller="Treinador" method="post">
+        <h1>Cadastro de Atleta</h1>
+        <form asp-action="CadastroAtleta" asp-controller="Atleta" method="post">
             <label asp-for="Nome"></label>
             <input asp-for="Nome" type="text" required>
 
@@ -89,7 +89,6 @@
 
             <label asp-for="TreinadorId"></label>
             <input asp-for="TreinadorId" type="text" required>
-
 
             <button type="submit">Cadastrar</button>
         </form>
